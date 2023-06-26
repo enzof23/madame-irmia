@@ -13,7 +13,6 @@ import Alert from "@/components/Alerts";
 import PortalWrapper from "@/components/portals/_wrapper";
 import PasswordRecovery from "@/components/portals/PasswordRecovery";
 import { supabaseClient } from "@/supabase-clients/client";
-import { supabaseActions } from "@/supabase-clients/server";
 
 function getErrorMessage(error: string) {
   switch (error) {
