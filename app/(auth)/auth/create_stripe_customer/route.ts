@@ -14,6 +14,8 @@ export async function POST() {
 
     const { auth_id, email } = data[0];
 
+    console.log({ auth_id, email });
+
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
       apiVersion: "2022-11-15",
     });
@@ -27,6 +29,8 @@ export async function POST() {
       .from("user_credits")
       .update({ stripe_customer: customer.id })
       .eq("user_id", auth_id);
+
+    console.log({ credits_error });
 
     if (credits_error)
       throw new Error(`An error occured when updating user_credits row`);
