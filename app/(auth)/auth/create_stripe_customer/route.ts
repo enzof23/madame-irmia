@@ -7,17 +7,18 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 export async function POST(req: any) {
-  const customer = await stripe.customers.create({
-    name: req.body.record.auth_id,
-    email: req.body.record.email,
-  });
+  console.log({ req });
+  // const customer = await stripe.customers.create({
+  //   name: req.body.record.auth_id,
+  //   email: req.body.record.email,
+  // });
 
-  const supabase = supabaseRouteHandler();
+  // const supabase = supabaseRouteHandler();
 
-  await supabase
-    .from("user_credits")
-    .update({ stripe_customer: customer.id })
-    .eq("user_id", req.body.record.auth_id);
+  // await supabase
+  //   .from("user_credits")
+  //   .update({ stripe_customer: customer.id })
+  //   .eq("user_id", req.body.record.auth_id);
 
   return NextResponse.json({
     message: "Stripe customer was successfully created!",
