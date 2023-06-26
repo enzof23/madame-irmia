@@ -9,12 +9,13 @@ export async function POST() {
       .from("profiles")
       .select("*");
 
-    if (!data || profile_error || data.length)
-      throw new Error(`An error occured when getting user profiles row`);
+    if (!data || profile_error || data.length === 0)
+      return NextResponse.json({
+        error: "An error occured when getting user profiles row",
+        profile_error,
+      });
 
     const { auth_id, email } = data[0];
-
-    console.log({ auth_id, email });
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
       apiVersion: "2022-11-15",
@@ -30,10 +31,11 @@ export async function POST() {
       .update({ stripe_customer: customer.id })
       .eq("user_id", auth_id);
 
-    console.log({ credits_error });
-
     if (credits_error)
-      throw new Error(`An error occured when updating user_credits row`);
+      return NextResponse.json({
+        error: "An error occured when updating user_credits table",
+        credits_error,
+      });
 
     return NextResponse.json({
       message: "Stripe customer was successfully created!",

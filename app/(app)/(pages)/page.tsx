@@ -6,7 +6,7 @@ import RecentActivity from "../components/accueil/RecentActivity";
 
 export const revalidate = 0;
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
       <div className="flex flex-col gap-y-6 py-6 md:gap-y-12">
