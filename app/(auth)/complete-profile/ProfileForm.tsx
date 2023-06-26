@@ -54,7 +54,7 @@ export default function ProfileForm(props: { user: User }) {
             "Couldn't insert new row in table 'profiles' from ProfileForm"
           );
 
-        if (!error) router.push("/");
+        router.push("/");
       }
     } catch (error) {
       setAuthError(true);
