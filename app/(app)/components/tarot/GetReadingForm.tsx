@@ -27,7 +27,6 @@ type FormProps = {
 const BASE_PROMPT = `You are a fortune teller (woman). You will answer in french, using a mystical tone. In the following prompt, you will be given a question from the user alongside 3 tarot cards and their information that will correspond respectively to past, present and future. Your task is, based on the information given about each card, to do a reading that will answer the user's question.`;
 
 export default function GetReadingForm(props: FormProps) {
-  const [question, setQuestion] = useState<string>("");
   const [prompt, setPrompt] = useState<string>(BASE_PROMPT);
 
   const [loader, setLoader] = useState<boolean>(false);
@@ -43,7 +42,7 @@ export default function GetReadingForm(props: FormProps) {
     try {
       // check if user has credits
       const { data, error } = await fetch(`${API_URL}/api/credits`, {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
