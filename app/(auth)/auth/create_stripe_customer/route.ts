@@ -5,6 +5,7 @@ import Stripe from "stripe";
 export async function POST() {
   try {
     const supabase = supabaseRouteHandler();
+
     const { data, error: profile_error } = await supabase
       .from("profiles")
       .select("*");

@@ -16,7 +16,7 @@ export default function HeaderCount() {
         onClick={() => setPortal(true)}
         className="rounded-lg bg-neutral-800 px-2 py-1 text-sm duration-300 md:cursor-pointer md:hover:bg-neutral-700"
       >
-        {realtimeCreditCount} Crédit{realtimeCreditCount > 0 && "s"}
+        {realtimeCreditCount} Crédit{realtimeCreditCount > 1 && "s"}
       </div>
 
       {portal &&

@@ -27,8 +27,6 @@ export default function Tarot(props: { username: string; user_id: string }) {
   const [display, setDisplay] = useState<Display>("form");
   const [cards, setCards] = useState<Card[]>(getRandomCards());
 
-  const card = getRandomCards();
-
   const [saving, setSaving] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
 

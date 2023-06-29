@@ -19,7 +19,16 @@ export default function PageHeader() {
 
 async function CreditCountSC() {
   const supabase = supabaseServer();
-  const { data } = await supabase.from("user_credits").select("*");
+  const { data: user } = await supabase.auth.getUser();
+
+  if (!user) return;
+
+  const user_id = user.user?.id;
+
+  const { data } = await supabase
+    .from("user_credits")
+    .select("*")
+    .eq("user_id", user_id);
 
   const user_credits_data = data && data[0];
 

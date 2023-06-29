@@ -16,6 +16,9 @@ import ParrainageImg from "@/public/credit-card-parrainage.svg";
 import DiamondImg from "@/public/credit-card-diamond.svg";
 import CoinImg from "@/public/credit-card-coin.svg";
 import { useCreditCount } from "@/realtime/credit-provider";
+import { API_URL } from "@/app/layout";
+import { usePathname } from "next/navigation";
+import { getStripe } from "@/lib/get-stripe";
 
 type PortalProps = {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
@@ -151,29 +154,35 @@ function ParrainageCard() {
 function CreditPurchaseCard() {
   const [loader, setLoader] = useState<boolean>(false);
   const [purchaseError, setPurchaseError] = useState<boolean>(false);
+  const pathname = usePathname();
 
   // Card credit purchase functions
   async function purchaseCredits() {
     try {
       setLoader(true);
 
-      //   const response = await fetchPostJSON("api/checkout_sessions");
+      const response = await fetch(`${API_URL}/api/create_checkout`, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify({ origin: pathname }),
+      }).then((res) => res.json());
 
-      //   if (response.statusCode === 500) {
-      //     console.error(response.message);
-      //     return;
-      //   }
+      if (response.statusCode === 500)
+        throw new Error("Failed to create a checkout session");
 
-      //   console.log(response);
+      const stripe = await getStripe();
+      const { error } = await stripe!.redirectToCheckout({
+        sessionId: response.id,
+      });
 
-      //   const stripe = await getStripe();
-      //   const { error } = await stripe!.redirectToCheckout({
-      //     sessionId: response.id,
-      //   });
-
-      //   console.warn(error.message);
-
-      setLoader(false);
+      // if (error) throw new Error(`Failed to redirect to checkout page`);
     } catch (error) {
       setLoader(false);
       setPurchaseError(true);
