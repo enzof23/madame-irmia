@@ -14,7 +14,7 @@ import ParrainageImg from "@/public/credit-card-parrainage.svg";
 import DiamondImg from "@/public/credit-card-diamond.svg";
 import CoinImg from "@/public/credit-card-coin.svg";
 import { useCreditCount } from "@/realtime/credit-provider";
-import { API_URL } from "@/app/layout";
+import { API_URL } from "@/lib/api_route";
 import { usePathname } from "next/navigation";
 import { getStripe } from "@/lib/get-stripe";
 

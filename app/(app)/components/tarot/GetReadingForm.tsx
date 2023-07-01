@@ -12,7 +12,7 @@ import { TarotTextArea } from "@/components/Inputs";
 
 import type { SUPABASE_CREDITS } from "@/lib/database";
 import type { Display } from "../../(pages)/tarot/Tarot";
-import { API_URL } from "@/app/layout";
+import { API_URL } from "@/lib/api_route";
 
 type FormProps = {
   username: string;

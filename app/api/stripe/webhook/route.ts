@@ -3,8 +3,7 @@ import { stripe } from "@/lib/stripe";
 
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-
-import { API_URL } from "@/app/layout";
+import { API_URL } from "@/lib/api_route";
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
 

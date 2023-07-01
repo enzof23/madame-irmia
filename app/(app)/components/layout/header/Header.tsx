@@ -6,7 +6,7 @@ import CreditProvider from "@/realtime/credit-provider";
 import Title from "./Title";
 import Credits from "./Credits";
 
-import { API_URL } from "@/app/layout";
+import { API_URL } from "@/lib/api_route";
 
 import type { SUPABASE_CREDITS } from "@/lib/database";
 

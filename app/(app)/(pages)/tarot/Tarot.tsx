@@ -7,7 +7,7 @@ import { HalfCircleSpinner } from "react-epic-spinners";
 import { useChat } from "ai/react";
 import { getRandomCards } from "./get-cards";
 
-import { API_URL } from "@/app/layout";
+import { API_URL } from "@/lib/api_route";
 
 import {
   ReadingLoading,

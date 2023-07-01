@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { HalfCircleSpinner } from "react-epic-spinners";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
-import { API_URL } from "@/app/layout";
+import { API_URL } from "@/lib/api_route";
 
 type ButtonProps = {
   activity_id: string;
