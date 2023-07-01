@@ -1,26 +1,13 @@
 import Stripe from "stripe";
-import { NextResponse } from "next/server";
-import { supabaseRouteHandler } from "@/supabase-clients/server";
 import { stripe } from "@/lib/stripe";
+
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const origin = body.origin;
+  const { origin, auth_id } = body;
 
   try {
-    const supabase = supabaseRouteHandler();
-    const { data, error } = await supabase.from("profiles").select("*");
-
-    if (!data || error)
-      return NextResponse.json(
-        {
-          error: "Couldn't get user profile from supabase in create_checkout",
-        },
-        { status: 401 }
-      );
-
-    const { auth_id } = data[0];
-
     const params: Stripe.Checkout.SessionCreateParams = {
       line_items: [
         {

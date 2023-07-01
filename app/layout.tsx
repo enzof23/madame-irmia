@@ -11,7 +11,7 @@ export type LayoutProps = {
   children: React.ReactNode;
 };
 
-export const API_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+export const API_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api`;
 
 export default async function RootLayout({ children }: LayoutProps) {
   return (

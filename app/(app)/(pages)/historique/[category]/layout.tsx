@@ -5,26 +5,28 @@ import TabFilter from "../../../components/historique/TabFilter";
 import { LayoutProps } from "@/app/layout";
 import { redirect } from "next/navigation";
 
-// import { ActivityLayoutLoader } from "@/components/loaders/_activity";
-
 export const revalidate = 0;
 
 export type Categories = "all" | "tarot" | "horoscope" | "chat";
 
 export default async function HistoriqueLayout({ children }: LayoutProps) {
   return (
-    // <Suspense fallback={<ActivityLayoutLoader />}>
-    <ServerComponent>{children}</ServerComponent>
-    // </Suspense>
+    <Suspense fallback={<p>loading...</p>}>
+      <ServerComponent>{children}</ServerComponent>
+    </Suspense>
   );
 }
 
 async function ServerComponent({ children }: { children: ReactNode }) {
   const supabase = supabaseServer();
-  const { data: historique } = await supabase.from("historique").select();
+  const { data: historique, error } = await supabase
+    .from("historique")
+    .select("*");
 
-  if (!historique)
-    throw new Error("Couldn't get user's historique from supabase");
+  if (error || !historique)
+    throw new Error(
+      `An error occured when getting historique data from supabase`
+    );
 
   if (historique.length === 0) redirect("/");
 

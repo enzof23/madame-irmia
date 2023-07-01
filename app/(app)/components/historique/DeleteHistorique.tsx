@@ -20,17 +20,12 @@ export default function DeleteHistoriqueButton({ activity_id }: ButtonProps) {
     try {
       setLoader(true);
 
-      const { error } = await fetch(
-        `${API_URL}/api/historique?id=${activity_id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      ).then((res) => res.json());
-
-      if (error) throw new Error("Couldn't delete historique row in supabase");
+      await fetch(`${API_URL}/supabase/historique?id=${activity_id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => res.json());
 
       router.push("/historique/all");
       setLoader(false);

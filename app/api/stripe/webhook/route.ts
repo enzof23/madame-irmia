@@ -1,8 +1,10 @@
-import { API_URL } from "@/app/layout";
+import Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
+
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
+
+import { API_URL } from "@/app/layout";
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -12,6 +14,8 @@ export const config = {
     bodyParser: false,
   },
 };
+
+export const runtime = "edge";
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -23,7 +27,6 @@ export async function POST(req: Request) {
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
-    // On error, log and return the error message.
     if (error! instanceof Error) console.log(error);
     console.log(`❌ Error message: ${errorMessage}`);
     return new NextResponse(`Webhook Error: ${errorMessage}`, { status: 400 });
@@ -38,13 +41,13 @@ export async function POST(req: Request) {
           amount: string;
         };
 
-        fetch(`${API_URL}/api/update-credits`, {
+        fetch(`${API_URL}/supabase/credits`, {
           method: "POST",
-          body: JSON.stringify({ auth_id, amount }),
+          body: JSON.stringify({ event: "update", auth_id, amount }),
         });
       } catch (error) {
-        console.log("Error in stripe_webhook route:", error);
-        return new NextResponse("Error in stripe_webhook route", {
+        console.log("Error in stripe/webhook route:", error);
+        return new NextResponse("Error in stripe/webhook route", {
           status: 400,
         });
       }

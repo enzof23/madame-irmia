@@ -22,6 +22,11 @@ type FormProps = {
   onChange: (
     e: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>
   ) => void;
+  auth_id: string;
+};
+
+type Credit_Response = {
+  credit_data: SUPABASE_CREDITS;
 };
 
 const BASE_PROMPT = `You are a fortune teller (woman). You will answer in french, using a mystical tone. In the following prompt, you will be given a question from the user alongside 3 tarot cards and their information that will correspond respectively to past, present and future. Your task is, based on the information given about each card, to do a reading that will answer the user's question.`;
@@ -40,23 +45,19 @@ export default function GetReadingForm(props: FormProps) {
     setLoader(true);
 
     try {
-      // check if user has credits
-      const { data, error } = await fetch(`${API_URL}/api/credits`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((res) => res.json());
+      const { credit_data }: Credit_Response = await fetch(
+        `${API_URL}/supabase/credits`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ event: "select", auth_id: props.auth_id }),
+        }
+      ).then((res) => res.json());
 
-      if (error || !data || data.length === 0)
-        throw new Error(
-          "An error occured when fetching credits from supabase in GetReading route"
-        );
-
-      const user_credits = data[0] as SUPABASE_CREDITS;
-
-      if (user_credits.credits === 0) {
-        setCredits(data[0]);
+      if (credit_data.credits === 0) {
+        setCredits(credit_data);
         setPortal(true);
         setLoader(false);
         return;
@@ -135,7 +136,7 @@ export default function GetReadingForm(props: FormProps) {
 
       {displayPortal &&
         createPortal(
-          <CreditProvider userData={credits}>
+          <CreditProvider credit_data={credits}>
             <PortalWrapper>
               <CreditPortal onClose={setPortal} />
             </PortalWrapper>

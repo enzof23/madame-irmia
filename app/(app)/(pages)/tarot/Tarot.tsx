@@ -53,16 +53,13 @@ export default function Tarot(props: { username: string; user_id: string }) {
       const user = messages.filter((m) => m.role === "user");
       const question = user[0].content;
 
-      const { error } = await fetch(`${API_URL}/api/tarot`, {
+      await fetch(`${API_URL}/supabase/tarot`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ question, cards, readings, user_id }),
-      }).then((res) => res.json());
-
-      if (error)
-        throw new Error(`Couldn't save reading in tarot table in saveReading`);
+      });
 
       setSaving(false);
       setSaved(true);
@@ -88,6 +85,7 @@ export default function Tarot(props: { username: string; user_id: string }) {
         handleSubmit={handleSubmit}
         input={input}
         onChange={handleInputChange}
+        auth_id={user_id}
       />
     );
 

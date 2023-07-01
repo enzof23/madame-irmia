@@ -3,8 +3,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-// import { fetchPostJSON, getStripe } from "@/utils/get-stripejs";
-
 import { BiCheck } from "react-icons/bi";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineContentCopy } from "react-icons/md";
@@ -155,13 +153,14 @@ function CreditPurchaseCard() {
   const [loader, setLoader] = useState<boolean>(false);
   const [purchaseError, setPurchaseError] = useState<boolean>(false);
   const pathname = usePathname();
+  const { user_id } = useCreditCount();
 
   // Card credit purchase functions
   async function purchaseCredits() {
     try {
       setLoader(true);
 
-      const response = await fetch(`${API_URL}/api/create_checkout`, {
+      const response = await fetch(`${API_URL}/stripe/create_checkout`, {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -171,7 +170,7 @@ function CreditPurchaseCard() {
         },
         redirect: "follow",
         referrerPolicy: "no-referrer",
-        body: JSON.stringify({ origin: pathname }),
+        body: JSON.stringify({ origin: pathname, auth_id: user_id }),
       }).then((res) => res.json());
 
       if (response.statusCode === 500)
@@ -182,7 +181,7 @@ function CreditPurchaseCard() {
         sessionId: response.id,
       });
 
-      // if (error) throw new Error(`Failed to redirect to checkout page`);
+      if (error) throw new Error(`Failed to redirect to checkout page`);
     } catch (error) {
       setLoader(false);
       setPurchaseError(true);
