@@ -1,11 +1,5 @@
-import { API_URL } from "@/app/layout";
-import { SUPABASE_HISTORIQUE } from "@/lib/database";
 import { supabaseRouteHandler } from "@/supabase-clients/server";
 import { NextResponse } from "next/server";
-
-type Response = {
-  historique_row: SUPABASE_HISTORIQUE;
-};
 
 export async function POST(req: Request) {
   const supabase = supabaseRouteHandler();

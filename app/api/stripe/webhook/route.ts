@@ -9,11 +9,11 @@ import { API_URL } from "@/app/layout";
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
 
 // Stripe requires the raw body to construct the event.
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
 
 export const runtime = "edge";
 
