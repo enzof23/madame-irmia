@@ -12,7 +12,7 @@ import { TarotTextArea } from "@/components/Inputs";
 
 import type { SUPABASE_CREDITS } from "@/lib/database";
 import type { Display } from "../../(pages)/tarot/Tarot";
-import { supabaseServer } from "@/supabase-clients/server";
+import { supabaseClient } from "@/supabase-clients/client";
 
 type FormProps = {
   username: string;
@@ -23,10 +23,6 @@ type FormProps = {
     e: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>
   ) => void;
   auth_id: string;
-};
-
-type Credit_Response = {
-  credit_data: SUPABASE_CREDITS;
 };
 
 const BASE_PROMPT = `You are a fortune teller (woman). You will answer in french, using a mystical tone. In the following prompt, you will be given a question from the user alongside 3 tarot cards and their information that will correspond respectively to past, present and future. Your task is, based on the information given about each card, to do a reading that will answer the user's question.`;
@@ -45,7 +41,7 @@ export default function GetReadingForm(props: FormProps) {
     setLoader(true);
 
     try {
-      const supabase = supabaseServer();
+      const supabase = supabaseClient();
       const { data: credit_data } = await supabase
         .from("user_credits")
         .select("*")
