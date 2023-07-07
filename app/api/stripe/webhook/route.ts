@@ -40,7 +40,7 @@ export async function POST(req: Request) {
           amount: string;
         };
 
-        fetch(`${API_URL}/supabase/credits`, {
+        await fetch(`${API_URL}/supabase/credits`, {
           method: "POST",
           body: JSON.stringify({ event: "update", auth_id, amount }),
         });
