@@ -5,16 +5,7 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { API_URL } from "@/lib/api_route";
 
-const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
-
-// Stripe requires the raw body to construct the event.
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };
-
-export const runtime = "edge";
+const endpointSecret: string = process.env.STRIPE_ENDPOINT_SECRET!;
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -22,7 +13,7 @@ export async function POST(req: Request) {
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
+    event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
@@ -40,7 +31,7 @@ export async function POST(req: Request) {
           amount: string;
         };
 
-        await fetch(`${API_URL}/supabase/credits`, {
+        fetch(`${API_URL}/supabase/credits`, {
           method: "POST",
           body: JSON.stringify({ event: "update", auth_id, amount }),
         });

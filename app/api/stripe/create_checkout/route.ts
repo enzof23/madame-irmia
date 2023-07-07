@@ -20,8 +20,8 @@ export async function POST(req: Request) {
         amount: 4,
       },
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL!}/${origin}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL!}/${origin}`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL!}${origin}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL!}${origin}`,
     };
 
     // Create Checkout Sessions from body params.
