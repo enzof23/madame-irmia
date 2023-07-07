@@ -1,12 +1,12 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import { useState, FormEvent, useEffect } from "react";
-import { SupportTextArea } from "@/components/Inputs";
-
 import { HalfCircleSpinner } from "react-epic-spinners";
+
+import { SupportTextArea } from "@/components/Inputs";
 import { submitSupportEmail } from "../../(pages)/support/action";
 import Toaster, { ToasterType } from "@/components/portals/Toaster";
-import { createPortal } from "react-dom";
 
 export default function SupportForm({ email }: { email: string }) {
   const [supportMsg, setSupportMsg] = useState<string>("");

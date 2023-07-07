@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 
 import { supabaseServer } from "@/supabase-clients/server";
 
-// import { SkeletonFull, SkeletonSM } from "@/components/loaders/Skeleton";
 import SignOutButton from "@/components/buttons/SignOut";
 import Profil from "../../components/profil/ProfilForm";
 
@@ -42,7 +41,7 @@ async function ProfilFormSC() {
   const supabase = supabaseServer();
   const { data: profile } = await supabase.from("profiles").select();
 
-  if (!profile) redirect("/connexion");
+  if (!profile) throw new Error("Couldn't get profile table from suapabase");
 
   if (profile.length === 0) redirect("/complete-profile");
 

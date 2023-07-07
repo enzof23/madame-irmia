@@ -12,7 +12,7 @@ import { TarotTextArea } from "@/components/Inputs";
 
 import type { SUPABASE_CREDITS } from "@/lib/database";
 import type { Display } from "../../(pages)/tarot/Tarot";
-import { API_URL } from "@/lib/api_route";
+import { supabaseServer } from "@/supabase-clients/server";
 
 type FormProps = {
   username: string;
@@ -45,28 +45,35 @@ export default function GetReadingForm(props: FormProps) {
     setLoader(true);
 
     try {
-      const { credit_data }: Credit_Response = await fetch(
-        `${API_URL}/supabase/credits`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ event: "select", auth_id: props.auth_id }),
-        }
-      ).then((res) => res.json());
+      const supabase = supabaseServer();
+      const { data: credit_data } = await supabase
+        .from("user_credits")
+        .select("*")
+        .eq("user_id", props.auth_id);
 
-      if (credit_data.credits === 0) {
-        setCredits(credit_data);
+      if (!credit_data || credit_data.length === 0)
+        throw new Error("Couldn't get user credits from supabase");
+
+      if (credit_data[0].credits === 0) {
+        setCredits(credit_data[0]);
         setPortal(true);
         setLoader(false);
         return;
       } else {
+        const newCreditsAmount = credit_data[0].credits - 1;
+
+        const { error } = await supabase
+          .from("user_credits")
+          .update({ credits: newCreditsAmount })
+          .eq("user_id", props.auth_id);
+
+        if (error) throw new Error("Couldn't update credit count in supabase");
+
         props.setDisplay("result");
         props.handleSubmit(event);
       }
     } catch (error) {
-      console.log(error);
+      console.log({ error });
     }
   }
 

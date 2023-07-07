@@ -6,8 +6,6 @@ import CreditProvider from "@/realtime/credit-provider";
 import Title from "./Title";
 import Credits from "./Credits";
 
-import { API_URL } from "@/lib/api_route";
-
 import type { SUPABASE_CREDITS } from "@/lib/database";
 
 type Response = {
@@ -18,7 +16,7 @@ export default function Header() {
   return (
     <div className="flex items-center justify-between gap-x-2 border-b-2 border-neutral-700 fill-primary-20 pb-5 pt-2 text-primary-20">
       <Title />
-      <Suspense fallback={<p>loading...</p>}>
+      <Suspense fallback={null}>
         <ServerComponent />
       </Suspense>
     </div>
@@ -30,16 +28,15 @@ async function ServerComponent() {
   const { data } = await supabase.auth.getUser();
   if (!data || !data.user) return;
 
-  const { credit_data }: Response = await fetch(`${API_URL}/supabase/credits`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ auth_id: data.user.id, event: "select" }),
-  }).then((res) => res.json());
+  const { data: credit_data } = await supabase
+    .from("user_credits")
+    .select("*")
+    .eq("user_id", data.user.id);
+
+  if (!credit_data || credit_data.length === 0) return;
 
   return (
-    <CreditProvider credit_data={credit_data}>
+    <CreditProvider credit_data={credit_data[0]}>
       <Credits />
     </CreditProvider>
   );

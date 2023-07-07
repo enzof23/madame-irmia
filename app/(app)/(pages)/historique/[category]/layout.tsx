@@ -11,7 +11,7 @@ export type Categories = "all" | "tarot" | "horoscope" | "chat";
 
 export default async function HistoriqueLayout({ children }: LayoutProps) {
   return (
-    <Suspense fallback={<p>loading...</p>}>
+    <Suspense fallback={null}>
       <ServerComponent>{children}</ServerComponent>
     </Suspense>
   );

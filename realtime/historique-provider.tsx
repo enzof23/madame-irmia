@@ -32,8 +32,6 @@ export default function HistoriqueProvider({
           table: "historique",
         },
         (payload) => {
-          console.log("Change received!", payload);
-
           if (payload.eventType === "INSERT") {
             setRealtimeHistorique((prev) => [
               payload.new as SUPABASE_HISTORIQUE,
@@ -46,22 +44,6 @@ export default function HistoriqueProvider({
               prev.filter((row) => row.id !== payload.old.id)
             );
           }
-
-          // if (payload.eventType === "UPDATE") {
-          //   setRealtimeHistorique((prev) => {
-          //     const updatedHistorique = payload.new as SUPABASE_HISTORIQUE;
-          //     const updatedIndex = prev.findIndex(
-          //       (row) => row.id === updatedHistorique.id
-          //     );
-          //     if (updatedIndex === -1) {
-          //       return prev; // If the row to update is not found, return the previous state unchanged
-          //     } else {
-          //       const updatedArray = [...prev];
-          //       updatedArray[updatedIndex] = updatedHistorique; // Replace the old row with the updated row
-          //       return updatedArray;
-          //     }
-          //   });
-          // }
         }
       )
       .subscribe();

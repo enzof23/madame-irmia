@@ -34,7 +34,7 @@ export default async function RecentActivity() {
           </div>
 
           <HistoriqueProvider serverData={historique}>
-            <RealtimeHistorique params="recent" />
+            <RealtimeHistorique category="recent" />
           </HistoriqueProvider>
         </div>
       )}

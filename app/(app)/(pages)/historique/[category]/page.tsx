@@ -38,5 +38,5 @@ export default async function HistoriquePage({ params }: PageParams) {
     );
   }
 
-  return <RealtimeHistorique params={params.category} />;
+  return <RealtimeHistorique category={params.category} />;
 }

@@ -28,9 +28,7 @@ export default function RecoveryPortal(props: PortalProps) {
       setLoading(true);
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo:
-          // "http://mme-irmia.vercel.app/auth/callback?next=/update-password",
-          "http://localhost:3000/auth/callback?next=/update-password",
+        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback?next=/update-password`,
       });
 
       if (error)

@@ -150,10 +150,11 @@ function ParrainageCard() {
 }
 
 function CreditPurchaseCard() {
-  const [loader, setLoader] = useState<boolean>(false);
-  const [purchaseError, setPurchaseError] = useState<boolean>(false);
   const pathname = usePathname();
   const { user_id } = useCreditCount();
+
+  const [loader, setLoader] = useState<boolean>(false);
+  const [purchaseError, setPurchaseError] = useState<boolean>(false);
 
   // Card credit purchase functions
   async function purchaseCredits() {

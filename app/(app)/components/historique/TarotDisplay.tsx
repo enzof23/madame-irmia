@@ -1,6 +1,5 @@
 import { tarotCards } from "@/lib/tarot-data";
 import { supabaseServer } from "@/supabase-clients/server";
-import { CardReadingWrapper } from "../tarot/CardReading";
 import Image from "next/image";
 
 export default async function TarotDisplay({

@@ -7,9 +7,9 @@ import type { SUPABASE_HISTORIQUE } from "@/lib/database";
 
 type CategoryType = "recent" | "all" | "tarot" | "horoscope" | "chat";
 
-export default function RealtimeHistorique(props: { params: CategoryType }) {
+export default function RealtimeHistorique(props: { category: CategoryType }) {
   const { realtimeHistorique } = useRealtimeHistorique();
-  const historique = getRelevantHistorique(realtimeHistorique, props.params);
+  const historique = getRelevantHistorique(realtimeHistorique, props.category);
 
   return (
     <div className="flex w-full flex-wrap justify-center gap-3 md:justify-start">
@@ -22,9 +22,9 @@ export default function RealtimeHistorique(props: { params: CategoryType }) {
 
 function getRelevantHistorique(
   historique: SUPABASE_HISTORIQUE[],
-  params: CategoryType
+  category: CategoryType
 ) {
-  switch (params) {
+  switch (category) {
     case "recent":
       const recentHistorique = sortHistorique(historique);
       return recentHistorique.slice(0, 4);
@@ -34,19 +34,19 @@ function getRelevantHistorique(
 
     case "tarot":
       const tarotHistorique = historique.filter(
-        (item) => item.categorie === params
+        (item) => item.categorie === category
       );
       return sortHistorique(tarotHistorique);
 
     case "horoscope":
       const horoscopeHistorique = historique.filter(
-        (item) => item.categorie === params
+        (item) => item.categorie === category
       );
       return sortHistorique(horoscopeHistorique);
 
     case "chat":
       const chatHistorique = historique.filter(
-        (item) => item.categorie === params
+        (item) => item.categorie === category
       );
       return sortHistorique(chatHistorique);
 

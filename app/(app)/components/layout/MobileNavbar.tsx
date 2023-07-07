@@ -1,13 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 import { mainMenu, footerMenu } from "@/lib/menu-items";
-import { HalfCircleSpinner } from "react-epic-spinners";
-import { BiLogOut } from "react-icons/bi";
 import SignOutButton from "@/components/buttons/SignOut";
 
 export default function MobileNavbar() {

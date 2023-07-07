@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// import { useUserLogout } from "@/supabase/function/auth";
 import { mainMenu, footerMenu } from "@/lib/menu-items";
 import SignOutButton from "@/components/buttons/SignOut";
 
