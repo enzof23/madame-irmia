@@ -3,29 +3,29 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const supabase = supabaseRouteHandler();
-  const { question, readings, cards, user_id } = await req.json();
+  const { question, readings, cards, auth_id } = await req.json();
 
   try {
     const { data, error } = await supabase
       .from("historique")
-      .insert({ categorie: "tarot", user_id })
+      .insert({ categorie: "tarot", auth_id })
       .select("*");
 
     if (!data || data.length === 0 || error)
       throw new Error("Failed to create new row in historique table");
 
-    const activity_id = data[0].id;
+    const historique_id = data[0].historique_id;
 
     const { error: err } = await supabase.from("tarot").insert({
-      activity_id,
+      auth_id,
+      historique_id,
       question,
-      first_cardID: cards[0].img,
-      first_reading: readings[0],
-      second_cardID: cards[1].img,
-      second_reading: readings[1],
-      third_cardID: cards[2].img,
-      third_reading: readings[2],
-      user_id,
+      first_card_name: cards[0].name,
+      first_card_reading: readings[0],
+      second_card_name: cards[1].name,
+      second_card_reading: readings[1],
+      third_card_name: cards[2].name,
+      third_card_reading: readings[2],
     });
 
     if (err) throw new Error(`Failed to create new row in historique table`);

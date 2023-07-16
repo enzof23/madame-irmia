@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
         fetch(`${API_URL}/supabase/credits`, {
           method: "POST",
-          body: JSON.stringify({ event: "update", auth_id, amount }),
+          body: JSON.stringify({ auth_id, amount }),
         });
       } catch (error) {
         console.log("Error in stripe/webhook route:", error);

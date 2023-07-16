@@ -74,8 +74,8 @@ export default function PasswordRecoveryPage() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === "USER_UPDATED") {
-        setLoader(false);
         router.push("/");
+        setLoader(false);
       }
     });
 

@@ -30,6 +30,7 @@ export default function HistoriqueProvider({
           event: "*",
           schema: "public",
           table: "historique",
+          filter: `auth_id=eq.${serverData[0].auth_id}`,
         },
         (payload) => {
           if (payload.eventType === "INSERT") {
@@ -40,8 +41,12 @@ export default function HistoriqueProvider({
           }
 
           if (payload.eventType === "DELETE") {
+            console.log(payload.old);
+
             setRealtimeHistorique((prev) =>
-              prev.filter((row) => row.id !== payload.old.id)
+              prev.filter(
+                (row) => row.historique_id !== payload.old.historique_id
+              )
             );
           }
         }

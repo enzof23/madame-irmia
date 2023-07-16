@@ -22,13 +22,13 @@ export default function ProfileForm(props: { user: User }) {
   const { email, id } = props.user;
 
   const [username, setUsername] = useState<string>("");
-  const [birthday, setBirthday] = useState<string>("");
+  const [birthdate, setBirthdate] = useState<string>("");
   const [birthtime, setBirthtime] = useState<string>("");
   const [gender, setGender] = useState<string>("");
 
   const [loader, setLoader] = useState<boolean>(false);
 
-  const formFilled = username && birthday;
+  const formFilled = username && birthdate;
 
   const [authError, setAuthError] = useState<boolean>(false);
 
@@ -42,7 +42,7 @@ export default function ProfileForm(props: { user: User }) {
 
         const { error } = await supabase.from("profiles").insert({
           auth_id: id,
-          birthday,
+          birthdate,
           birthtime,
           email,
           username,
@@ -70,7 +70,7 @@ export default function ProfileForm(props: { user: User }) {
     >
       <NameInput value={username} placeholder={"Gaia"} setState={setUsername} />
 
-      <BirthdateInput value={birthday} setState={setBirthday} />
+      <BirthdateInput value={birthdate} setState={setBirthdate} />
 
       <BirthtimeInput value={birthtime} setState={setBirthtime} />
 

@@ -4,7 +4,7 @@ import { SUPABASE_CREDITS } from "@/lib/database";
 import { supabaseClient } from "@/supabase-clients/client";
 import { createContext, useContext, useEffect, useState } from "react";
 
-type CreditContext = { realtimeCreditCount: number; user_id: string };
+type CreditContext = { realtimeCreditCount: number; auth_id: string };
 
 const Context = createContext<CreditContext | undefined>(undefined);
 
@@ -16,10 +16,10 @@ export default function CreditProvider({
   credit_data: SUPABASE_CREDITS;
 }) {
   const supabase = supabaseClient();
-  const { credits, user_id } = credit_data;
+  const { credits_amount, auth_id } = credit_data;
 
   const [realtimeCreditCount, setRealtimeCreditCount] =
-    useState<number>(credits);
+    useState<number>(credits_amount);
 
   useEffect(() => {
     const channel = supabase
@@ -30,7 +30,7 @@ export default function CreditProvider({
           event: "UPDATE",
           schema: "public",
           table: "user_credits",
-          filter: `user_id=eq.${user_id}`,
+          filter: `auth_id=eq.${auth_id}`,
         },
         (payload) => {
           setRealtimeCreditCount(payload.new.credits);
@@ -44,7 +44,7 @@ export default function CreditProvider({
   }, []);
 
   return (
-    <Context.Provider value={{ realtimeCreditCount, user_id }}>
+    <Context.Provider value={{ realtimeCreditCount, auth_id }}>
       {children}
     </Context.Provider>
   );

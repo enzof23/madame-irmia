@@ -3,85 +3,35 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[];
 
 export interface Database {
   public: {
     Tables: {
-      chat: {
-        Row: {
-          activity_id: string;
-          id: string;
-          user_id: string;
-        };
-        Insert: {
-          activity_id: string;
-          id: string;
-          user_id: string;
-        };
-        Update: {
-          activity_id?: string;
-          id?: string;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "chat_user_id_fkey";
-            columns: ["user_id"];
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          }
-        ];
-      };
       historique: {
         Row: {
           categorie: string;
           created_at: string;
-          id: string;
-          user_id: string;
+          historique_id: string;
+          auth_id: string;
         };
         Insert: {
           categorie: string;
           created_at?: string;
-          id?: string;
-          user_id: string;
+          historique_id?: string;
+          auth_id: string;
         };
         Update: {
           categorie?: string;
           created_at?: string;
-          id?: string;
-          user_id?: string;
+          historique_id?: string;
+          auth_id?: string;
         };
         Relationships: [
           {
-            foreignKeyName: "historique_user_id_fkey";
-            columns: ["user_id"];
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          }
-        ];
-      };
-      horoscope: {
-        Row: {
-          activity_id: string;
-          id: string;
-          user_id: string;
-        };
-        Insert: {
-          activity_id: string;
-          id: string;
-          user_id: string;
-        };
-        Update: {
-          activity_id?: string;
-          id?: string;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "horoscope_user_id_fkey";
-            columns: ["user_id"];
+            foreignKeyName: "historique_auth_id_fkey";
+            columns: ["auth_id"];
             referencedRelation: "users";
             referencedColumns: ["id"];
           }
@@ -90,32 +40,32 @@ export interface Database {
       profiles: {
         Row: {
           auth_id: string;
-          birthday: string;
+          birthdate: string;
           birthtime: string | null;
           created_at: string;
           email: string;
           gender: string;
-          id: number;
+          profile_id: string;
           username: string;
         };
         Insert: {
           auth_id: string;
-          birthday: string;
+          birthdate: string;
           birthtime?: string | null;
           created_at?: string;
           email: string;
           gender: string;
-          id?: number;
+          profile_id?: string;
           username: string;
         };
         Update: {
           auth_id?: string;
-          birthday?: string;
+          birthdate?: string;
           birthtime?: string | null;
           created_at?: string;
           email?: string;
           gender?: string;
-          id?: number;
+          profile_id?: string;
           username?: string;
         };
         Relationships: [
@@ -129,82 +79,79 @@ export interface Database {
       };
       tarot: {
         Row: {
-          activity_id: string;
+          auth_id: string;
           created_at: string;
-          first_cardID: string;
-          first_reading: string;
-          id: number;
+          first_card_name: string;
+          first_card_reading: string;
+          historique_id: string;
           question: string;
-          second_cardID: string;
-          second_reading: string;
-          third_cardID: string;
-          third_reading: string;
-          user_id: string;
+          second_card_name: string;
+          second_card_reading: string;
+          tarot_id: string;
+          third_card_name: string;
+          third_card_reading: string;
         };
         Insert: {
-          activity_id: string;
+          auth_id: string;
           created_at?: string;
-          first_cardID: string;
-          first_reading: string;
-          id?: number;
+          first_card_name: string;
+          first_card_reading: string;
+          historique_id: string;
           question: string;
-          second_cardID: string;
-          second_reading: string;
-          third_cardID: string;
-          third_reading: string;
-          user_id: string;
+          second_card_name: string;
+          second_card_reading: string;
+          tarot_id?: string;
+          third_card_name: string;
+          third_card_reading: string;
         };
         Update: {
-          activity_id?: string;
+          auth_id?: string;
           created_at?: string;
-          first_cardID?: string;
-          first_reading?: string;
-          id?: number;
+          first_card_name?: string;
+          first_card_reading?: string;
+          historique_id?: string;
           question?: string;
-          second_cardID?: string;
-          second_reading?: string;
-          third_cardID?: string;
-          third_reading?: string;
-          user_id?: string;
+          second_card_name?: string;
+          second_card_reading?: string;
+          tarot_id?: string;
+          third_card_name?: string;
+          third_card_reading?: string;
         };
         Relationships: [
           {
-            foreignKeyName: "tarot_activity_id_fkey";
-            columns: ["activity_id"];
-            referencedRelation: "historique";
+            foreignKeyName: "tarot_auth_id_fkey";
+            columns: ["auth_id"];
+            referencedRelation: "users";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "tarot_user_id_fkey";
-            columns: ["user_id"];
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            foreignKeyName: "tarot_historique_id_fkey";
+            columns: ["historique_id"];
+            referencedRelation: "historique";
+            referencedColumns: ["historique_id"];
           }
         ];
       };
       user_credits: {
         Row: {
-          credits: number;
-          id: string;
-          stripe_customer: string | null;
-          user_id: string;
+          auth_id: string;
+          credits_amount: number;
+          credits_id: string;
         };
         Insert: {
-          credits?: number;
-          id?: string;
-          stripe_customer?: string | null;
-          user_id: string;
+          auth_id: string;
+          credits_amount?: number;
+          credits_id?: string;
         };
         Update: {
-          credits?: number;
-          id?: string;
-          stripe_customer?: string | null;
-          user_id?: string;
+          auth_id?: string;
+          credits_amount?: number;
+          credits_id?: string;
         };
         Relationships: [
           {
-            foreignKeyName: "user_credits_user_id_fkey";
-            columns: ["user_id"];
+            foreignKeyName: "user_credits_auth_id_fkey";
+            columns: ["auth_id"];
             referencedRelation: "users";
             referencedColumns: ["id"];
           }
@@ -227,11 +174,13 @@ export interface Database {
 }
 
 export type SUPABASE_PROFILES = Database["public"]["Tables"]["profiles"]["Row"];
+export type PROFILES_UPDATE =
+  Database["public"]["Tables"]["profiles"]["Update"];
+
+export type SUPABASE_CREDITS =
+  Database["public"]["Tables"]["user_credits"]["Row"];
 
 export type SUPABASE_HISTORIQUE =
   Database["public"]["Tables"]["historique"]["Row"];
 
 export type SUPABASE_TAROT = Database["public"]["Tables"]["tarot"]["Row"];
-
-export type SUPABASE_CREDITS =
-  Database["public"]["Tables"]["user_credits"]["Row"];

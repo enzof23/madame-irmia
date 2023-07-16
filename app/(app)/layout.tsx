@@ -1,7 +1,7 @@
-import Header from "./components/layout/header/Header";
-import MobileNavbar from "./components/layout/MobileNavbar";
-import Sidebar from "./components/layout/Sidebar";
 import { LayoutProps } from "../layout";
+import MobileNavbar from "./_components/layout/MobileNavbar";
+import Sidebar from "./_components/layout/Sidebar";
+import Header from "./_components/layout/header/Header";
 
 export const revalidate = 0;
 

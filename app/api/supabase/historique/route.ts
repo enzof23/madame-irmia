@@ -6,10 +6,13 @@ import type { NextRequest } from "next/server";
 export async function DELETE(request: NextRequest) {
   const supabase = supabaseRouteHandler();
   const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
+  const historique_id = searchParams.get("id");
 
   try {
-    const { error } = await supabase.from("historique").delete().eq("id", id);
+    const { error } = await supabase
+      .from("historique")
+      .delete()
+      .eq("historique_id", historique_id);
 
     if (error)
       throw new Error(
