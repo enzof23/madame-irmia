@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+
 import { supabaseServer } from "@/supabase-clients/server";
 
 import HistoriqueProvider from "@/realtime/historique-provider";
@@ -8,6 +10,10 @@ export const revalidate = 0;
 
 export default async function RecentActivity() {
   const supabase = supabaseServer();
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) redirect("/connexion");
+  const user = data.user;
+
   const { data: historique } = await supabase.from("historique").select();
 
   const hasRecentActivity = historique && historique.length > 0;
@@ -32,7 +38,7 @@ export default async function RecentActivity() {
             </Link>
           </div>
 
-          <HistoriqueProvider serverData={historique}>
+          <HistoriqueProvider serverData={historique} auth_id={user.id}>
             <RealtimeHistorique category="recent" />
           </HistoriqueProvider>
         </div>

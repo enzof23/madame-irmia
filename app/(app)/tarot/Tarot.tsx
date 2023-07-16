@@ -20,9 +20,7 @@ const BASE_PROMPT = `You are a fortune teller (woman). You will answer in french
 
 export type Display = "form" | "result";
 
-type User = SUPABASE_PROFILES;
-
-export default function Tarot(props: { user: User }) {
+export default function Tarot(props: { user: SUPABASE_PROFILES }) {
   const { username, auth_id } = props.user;
   const [display, setDisplay] = useState<Display>("form");
   const [cards, setCards] = useState<Card[]>(getRandomCards());
@@ -53,13 +51,15 @@ export default function Tarot(props: { user: User }) {
       const user = messages.filter((m) => m.role === "user");
       const question = user[0].content;
 
-      await fetch(`${API_URL}/supabase/tarot`, {
+      const response = await fetch(`${API_URL}/supabase/tarot`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ question, cards, readings, auth_id }),
       });
+
+      if (response.status === 400) throw new Error("Couldn't save reading");
 
       setSaving(false);
       setSaved(true);

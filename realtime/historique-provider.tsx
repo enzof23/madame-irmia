@@ -12,9 +12,11 @@ const Context = createContext<HistoriqueContext | undefined>(undefined);
 export default function HistoriqueProvider({
   children,
   serverData,
+  auth_id,
 }: {
   children: React.ReactNode;
   serverData: SUPABASE_HISTORIQUE[];
+  auth_id: string;
 }) {
   const supabase = supabaseClient();
 
@@ -30,7 +32,7 @@ export default function HistoriqueProvider({
           event: "*",
           schema: "public",
           table: "historique",
-          filter: `auth_id=eq.${serverData[0].auth_id}`,
+          filter: `auth_id=eq.${auth_id}`,
         },
         (payload) => {
           if (payload.eventType === "INSERT") {

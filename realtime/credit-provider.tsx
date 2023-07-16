@@ -16,7 +16,7 @@ export default function CreditProvider({
   credit_data: SUPABASE_CREDITS;
 }) {
   const supabase = supabaseClient();
-  const { credits_amount, auth_id } = credit_data;
+  const { credits_amount, credits_id, auth_id } = credit_data;
 
   const [realtimeCreditCount, setRealtimeCreditCount] =
     useState<number>(credits_amount);
@@ -30,10 +30,10 @@ export default function CreditProvider({
           event: "UPDATE",
           schema: "public",
           table: "user_credits",
-          filter: `auth_id=eq.${auth_id}`,
+          filter: `credits_id=eq.${credits_id}`,
         },
         (payload) => {
-          setRealtimeCreditCount(payload.new.credits);
+          setRealtimeCreditCount(payload.new.credits_amount);
         }
       )
       .subscribe();
