@@ -151,7 +151,7 @@ function ParrainageCard() {
 
 function CreditPurchaseCard() {
   const pathname = usePathname();
-  const { user_id } = useCreditCount();
+  const { auth_id } = useCreditCount();
 
   const [loader, setLoader] = useState<boolean>(false);
   const [purchaseError, setPurchaseError] = useState<boolean>(false);
@@ -171,7 +171,7 @@ function CreditPurchaseCard() {
         },
         redirect: "follow",
         referrerPolicy: "no-referrer",
-        body: JSON.stringify({ origin: pathname, auth_id: user_id }),
+        body: JSON.stringify({ origin: pathname, auth_id }),
       }).then((res) => res.json());
 
       if (response.statusCode === 500)
