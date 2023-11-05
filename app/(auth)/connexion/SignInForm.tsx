@@ -29,8 +29,8 @@ export default function SignInForm(props: { setView: DispatchProps }) {
   const router = useRouter();
   const supabase = supabaseClient();
 
-  const [email, setEmail] = useState<string>("enzo.filippo@yahoo.fr");
-  const [password, setPassword] = useState<string>("Ab123456!");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const [loader, setLoader] = useState<boolean>(false);
 

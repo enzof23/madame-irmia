@@ -43,8 +43,6 @@ export default function HistoriqueProvider({
           }
 
           if (payload.eventType === "DELETE") {
-            console.log(payload.old);
-
             setRealtimeHistorique((prev) =>
               prev.filter(
                 (row) => row.historique_id !== payload.old.historique_id

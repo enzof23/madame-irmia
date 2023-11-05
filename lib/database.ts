@@ -11,22 +11,22 @@ export interface Database {
     Tables: {
       historique: {
         Row: {
+          auth_id: string;
           categorie: string;
           created_at: string;
           historique_id: string;
-          auth_id: string;
         };
         Insert: {
+          auth_id: string;
           categorie: string;
           created_at?: string;
           historique_id?: string;
-          auth_id: string;
         };
         Update: {
+          auth_id?: string;
           categorie?: string;
           created_at?: string;
           historique_id?: string;
-          auth_id?: string;
         };
         Relationships: [
           {
@@ -137,16 +137,28 @@ export interface Database {
           auth_id: string;
           credits_amount: number;
           credits_id: string;
+          stripe_id: string | null;
+          subscribed: boolean;
+          subscription_id: string | null;
+          subscription_renew: string | null;
         };
         Insert: {
           auth_id: string;
           credits_amount?: number;
           credits_id?: string;
+          stripe_id?: string | null;
+          subscribed?: boolean;
+          subscription_id?: string | null;
+          subscription_renew?: string | null;
         };
         Update: {
           auth_id?: string;
           credits_amount?: number;
           credits_id?: string;
+          stripe_id?: string | null;
+          subscribed?: boolean;
+          subscription_id?: string | null;
+          subscription_renew?: string | null;
         };
         Relationships: [
           {

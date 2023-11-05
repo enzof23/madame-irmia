@@ -10,13 +10,12 @@ import CreditPortal from "@/components/portals/CreditPortal";
 import PortalWrapper from "@/components/portals/_wrapper";
 import { TarotTextArea } from "@/components/Inputs";
 
-import type { SUPABASE_CREDITS } from "@/lib/database";
+import type { SUPABASE_CREDITS, SUPABASE_PROFILES } from "@/lib/database";
 import type { Display } from "../Tarot";
 import { supabaseClient } from "@/supabase-clients/client";
 
 type FormProps = {
-  auth_id: string;
-  username: string;
+  user_data: SUPABASE_PROFILES;
   input: string;
   setDisplay: React.Dispatch<React.SetStateAction<Display>>;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
@@ -25,11 +24,8 @@ type FormProps = {
   ) => void;
 };
 
-const BASE_PROMPT = `You are a fortune teller (woman). You will answer in french, using a mystical tone. In the following prompt, you will be given a question from the user alongside 3 tarot cards and their information that will correspond respectively to past, present and future. Your task is, based on the information given about each card, to do a reading that will answer the user's question.`;
-
 export default function GetReadingForm(props: FormProps) {
-  const [prompt, setPrompt] = useState<string>(BASE_PROMPT);
-
+  const { auth_id, username } = props.user_data;
   const [loader, setLoader] = useState<boolean>(false);
 
   const [portal, setPortal] = useState<boolean>(false);
@@ -45,7 +41,7 @@ export default function GetReadingForm(props: FormProps) {
       const { data } = await supabase
         .from("user_credits")
         .select("*")
-        .eq("auth_id", props.auth_id);
+        .eq("auth_id", auth_id);
 
       if (!data || data.length === 0)
         throw new Error("Couldn't get user credits from supabase");
@@ -63,7 +59,7 @@ export default function GetReadingForm(props: FormProps) {
         const { error } = await supabase
           .from("user_credits")
           .update({ credits_amount: newCreditsAmount })
-          .eq("auth_id", props.auth_id);
+          .eq("auth_id", auth_id);
 
         if (error) throw new Error("Couldn't update credit count in supabase");
 
@@ -80,10 +76,8 @@ export default function GetReadingForm(props: FormProps) {
       <div className="max-w-xl">
         <h3 className="font-spectral text-2xl font-semibold text-primary-20 sm:text-3xl md:text-4xl">
           Bienvenue
-          {props.username && (
-            <span className="capitalize"> {props.username}</span>
-          )}
-          , demandez à l&apos;Univers de vous guider dans votre avenir.
+          {username && <span className="capitalize"> {username}</span>},
+          demandez à l&apos;Univers de vous guider dans votre avenir.
         </h3>
 
         <div className="flex flex-col gap-y-2 py-4">
@@ -124,18 +118,6 @@ export default function GetReadingForm(props: FormProps) {
             avec amour et gratitude sur votre intention avant de tirer vos
             cartes.
           </p>
-
-          {/* Remove in public version */}
-          <hr className="my-4" />
-
-          <h3 className="rounded-lg bg-neutral-600 p-4 font-extralight italic text-primary-60">
-            Entrez un prompt différent pour tester les réponses de GPT. Le
-            prompt peut être rédigé en français. <br /> *Ceci est uniquement
-            dans un but de tester GPT et ne sera pas dans la version publique*
-          </h3>
-
-          <TarotTextArea value={prompt} setState={setPrompt} />
-          {/* Until here */}
         </div>
       </div>
 

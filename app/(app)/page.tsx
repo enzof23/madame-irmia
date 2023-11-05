@@ -1,12 +1,13 @@
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
+
+import { supabaseServer } from "@/supabase-clients/server";
+
+import HistoriqueProvider from "@/realtime/historique-provider";
 
 import Loader from "./_components/accueil/loader";
 import RecentActivity from "./_components/accueil/RecentActivity";
 import FunctionnalityCards from "./_components/accueil/FunctionnalityCards";
-import { supabaseServer } from "@/supabase-clients/server";
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import HistoriqueProvider from "@/realtime/historique-provider";
 
 export const revalidate = 0;
 

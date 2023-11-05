@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import { CgCheckO } from "react-icons/cg";
 import { HalfCircleSpinner } from "react-epic-spinners";
 
@@ -16,12 +16,11 @@ import TarotForm from "./components/Form";
 import type { Card } from "@/lib/tarot-data";
 import type { SUPABASE_PROFILES } from "@/lib/database";
 
-const BASE_PROMPT = `You are a fortune teller (woman). You will answer in french, using a mystical tone. In the following prompt, you will be given a question from the user alongside 3 tarot cards and their information that will correspond respectively to past, present and future. Your task is, based on the information given about each card, to do a reading that will answer the user's question.`;
-
 export type Display = "form" | "result";
 
 export default function Tarot(props: { user: SUPABASE_PROFILES }) {
-  const { username, auth_id } = props.user;
+  const { auth_id, username, gender } = props.user;
+  const user_info = { username, gender };
   const [display, setDisplay] = useState<Display>("form");
   const [cards, setCards] = useState<Card[]>(getRandomCards());
 
@@ -36,7 +35,7 @@ export default function Tarot(props: { user: SUPABASE_PROFILES }) {
     isLoading,
     setMessages,
   } = useChat({
-    body: { cards: cards, prompt: BASE_PROMPT },
+    body: { cards: cards, user_info },
     api: "/api/get-reading",
   });
 
@@ -80,8 +79,7 @@ export default function Tarot(props: { user: SUPABASE_PROFILES }) {
   if (display === "form")
     return (
       <TarotForm
-        auth_id={auth_id}
-        username={username}
+        user_data={props.user}
         input={input}
         setDisplay={setDisplay}
         handleSubmit={handleSubmit}
